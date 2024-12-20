@@ -78,22 +78,24 @@ def plot_data(pT, RAA, sigma, cent, system, ax=None):
     ax.legend(loc='upper right', bbox_to_anchor=(1, 1))
 
 
-def plot_combined_box_rmse(ax, y_true, surmise_pred, smooth_pred, sckit_pred, label, plot_type="Validation"):
+def plot_combined_box_rmse(ax, y_true, surmise_pred, aksgp_pred, smooth_pred, sckit_pred, label, plot_type="Validation"):
     y_true = np.asarray(y_true)
     surmise_pred = np.asarray(surmise_pred)
+    aksgp_pred = np.asarray(aksgp_pred)
     smooth_pred = np.asarray(smooth_pred)
     sckit_pred = np.asarray(sckit_pred)
 
     # Compute root mean square errors
     surmise_rmse = np.sqrt((surmise_pred - y_true) ** 2)
+    aksgp_rmse = np.sqrt((aksgp_pred - y_true) ** 2)
     smooth_rmse = np.sqrt((smooth_pred - y_true) ** 2)
     sckit_rmse = np.sqrt((sckit_pred - y_true) ** 2)
 
     # Combine errors for the box plot
-    combined_errors = [surmise_rmse.flatten(), smooth_rmse.flatten(), sckit_rmse.flatten()]
+    combined_errors = [surmise_rmse.flatten(), aksgp_rmse.flatten(), smooth_rmse.flatten(), sckit_rmse.flatten()]
 
     # Plotting
-    ax.boxplot(combined_errors, tick_labels=['Surmise', 'Smooth', 'Scikit-learn'])
+    ax.boxplot(combined_errors, tick_labels=['Surmise', 'AKSGP', 'Smooth', 'Scikit-learn'])
     ax.set_title(f'{label}', fontsize=20)
     ax.tick_params(axis='both', which='major', labelsize=20)
 
